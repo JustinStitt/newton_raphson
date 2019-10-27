@@ -10,6 +10,7 @@
 //implement product, quotient, chain rule
 #include <iostream>
 #include <iomanip>
+#include <string>
 #include <cmath>
 #include <vector>
 
@@ -18,11 +19,16 @@ const int DECIMAL_PRECISION = 15;//how many decimal points used for formatting O
 using namespace std;
 
 double newtons_method(double, int);
+void create_tokens(vector<string>&tokens,string);
+string remove_whitespace(string);
+
+
 
 struct monomial {//a monomial is a (coeff,power) couple. i.e; (3x^2)... coeff = 3, power = 2
 	double coeff;
 	double power;
 };
+vector<monomial> parser(vector<string>);
 
 class poly_function//a poly function is an array of (coeff,power) pairs. ex: [5x^3 (coeff = 5, power = 3)]
 {
@@ -102,35 +108,64 @@ poly_function some_func, some_der;
 
 int main()
 {
-	monomial some_term,some_term2,some_term3;//a monomial is a (coeff,power) pairing... i.e; (3x^2) is coeff = 3, power = 2
+	vector<string> tokens;
+	string poly;
+	cout << "Enter a polynomial function: " << endl;
+	getline(cin, poly);
+	poly += "#";
+	poly = remove_whitespace(poly);
+	create_tokens(tokens, poly);
+	
+	some_func.terms = parser(tokens);
+	some_der.terms = some_func.derivative();
 
-	//We could make a parser to get user input, but for now... manually input each term before runtime.
-	//TERM 0
-	some_term.coeff = 1.00;
-	some_term.power = 3;
-	//TERM 1
-	some_term2.coeff = -2.00;
-	some_term2.power = 1;
-	//TERM 2
-	some_term3.coeff = -5.00;
-	some_term3.power = 0;
-	//ADDING TERMS TO OUR POLYNOMIAL FUNCTION
-	some_func.add_term(some_term);//0
-	some_func.add_term(some_term2);//1
-	some_func.add_term(some_term3);//2
 
-	some_der.terms = some_func.derivative();//calculating the derivative and setting our derivative function to hold its new terms
 
-	some_func.display();//print out poly func
-	some_der.display(true);//print out poly func der
 
 
 	cout << "100 iterations of newtons_method of f(x) returns: " << fixed <<setprecision(DECIMAL_PRECISION) <<  newtons_method(2.0,100) << endl;
+
 
 	system("PAUSE>nul");//windows only. stops the cmd console from insta-closing
 	return 0;
 }
 
+string remove_whitespace(string to_clean)
+{
+	for (int x = 0; x < to_clean.size(); x++)
+	{
+		if (to_clean[x] == ' ')
+		{
+			to_clean.erase(x, 1);
+			to_clean = remove_whitespace(to_clean);
+		}
+	}
+	return to_clean;
+}
+
+void create_tokens(vector<string> & tokens, string to_split)
+{
+	string delimiter = "+-#";//#signifies the end of the polynomial
+	int size = to_split.size();
+	for (int x = 0; x < size; x++)
+	{
+		for (int y = 0; y < delimiter.size(); y++)
+		{
+			if (to_split[x] == delimiter[y])
+			{//if we've found a token identifier then we need to split the string and re-pass it (Recursion)
+				if (x != 0)
+				{
+					tokens.push_back(to_split.substr(0, x));//add the token to a vector of strings
+					to_split.erase(0, x);//take the token off the front of the string
+					size -= x;
+					x = 0;//restart x index
+				}
+			}
+
+		}
+	}
+
+}
 
 double newtons_method(double x, int iterations)//recursive function to iteratively estimate roots of any given function using its derivative and a starting term
 {
@@ -141,4 +176,24 @@ double newtons_method(double x, int iterations)//recursive function to iterative
 	}
 	return val;//after our iterations are done. output the final value of val
 
+}
+
+vector<monomial> parser(vector<string> tokens)
+{//goal: convert each token to a monomial struct (coeff,power) form
+	vector<monomial> terms;
+	monomial term;
+	double coeff, power;
+	for (int x = 0; x < tokens.size(); x++)
+	{//navigate through each token (3x^2) or (-2x^0)
+		for (int y = 0; y < tokens[x].size(); y++)
+		{
+			if (tokens[x][y] == 'x')
+			{
+				term.coeff = stod(tokens[x].substr(0, y));
+				term.power = stod(tokens[x].substr(y + 2, tokens[x].size()));
+				terms.push_back(term);//adding a monomial struct to our vector (terms)
+			}
+		}
+	}
+	return terms;
 }
