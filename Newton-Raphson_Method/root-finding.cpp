@@ -6,8 +6,8 @@
 * successively better approximations to the roots of a real-valued function. - wiki
 */
 
-//TO:DO's... make a parser to read a poly_func from user input
-//implement product, quotient, chain rule
+//TO:DO's... 
+//implement product, quotient, chain rule to parser.
 #include <iostream>
 #include <iomanip>
 #include <string>
