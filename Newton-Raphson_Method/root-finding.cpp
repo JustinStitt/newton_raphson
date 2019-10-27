@@ -121,6 +121,8 @@ int main()
 	
 	some_func.terms = parser(tokens);
 	some_der.terms = some_func.derivative();
+	string user_in;
+	do{
 	some_func.display();
 	some_der.display(true);
 
@@ -133,7 +135,10 @@ int main()
 
 
 	cout << iterations << " iterations of newtons_method of f(x) returns: " << fixed <<setprecision(DECIMAL_PRECISION) <<  newtons_method(genesis,iterations) << endl;
-
+	cout << "Try different genesis value and iteration count? (y/n)..." << endl;
+	cin >> user_in;
+	system("CLS");
+	} while (user_in == "y");
 
 	system("PAUSE>nul");//windows only. stops the cmd console from insta-closing
 	return 0;
