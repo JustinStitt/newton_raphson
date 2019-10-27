@@ -110,20 +110,29 @@ int main()
 {
 	vector<string> tokens;
 	string poly;
+	double genesis = 1.0;//default value of 1.0
+	int iterations = 10;//default iterations
 	cout << "Enter a polynomial function: " << endl;
 	getline(cin, poly);
+	system("CLS");
 	poly += "#";
 	poly = remove_whitespace(poly);
 	create_tokens(tokens, poly);
 	
 	some_func.terms = parser(tokens);
 	some_der.terms = some_func.derivative();
+	some_func.display();
+	some_der.display(true);
+
+	cout << "What is the genesis term?: " << endl;
+	cin >> genesis;
+
+	cout << "How many iterations?: " << endl;
+	cin >> iterations;
 
 
 
-
-
-	cout << "100 iterations of newtons_method of f(x) returns: " << fixed <<setprecision(DECIMAL_PRECISION) <<  newtons_method(2.0,100) << endl;
+	cout << iterations << " iterations of newtons_method of f(x) returns: " << fixed <<setprecision(DECIMAL_PRECISION) <<  newtons_method(genesis,iterations) << endl;
 
 
 	system("PAUSE>nul");//windows only. stops the cmd console from insta-closing
