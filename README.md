@@ -6,4 +6,7 @@
  is a root-finding algorithm which produces 
  successively better approximations to the roots of a real-valued function.
  
- This is implemented in c++.
+ This is implemented in c++.  
+ 
+ sample I/O:
+ ![](newton_raphson.png)
