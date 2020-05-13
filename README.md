@@ -8,5 +8,10 @@
  
  This is implemented in c++.  
  
- sample I/O:
+ My program parses input and converts the string to a workable polynomial function.  
+ It will then calculate the derivative of the function.  
+ Then using Newton_Raphson root-approximation, finds the root(s) of the function.  
+ 
+ 
+ **sample I/O:**
  ![](newton_raphson.png)
