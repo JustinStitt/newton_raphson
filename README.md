@@ -14,4 +14,5 @@
  
  
  **sample I/O:**
+ 
  ![](newton_raphson.png)
